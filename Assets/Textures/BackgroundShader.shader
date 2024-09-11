@@ -44,15 +44,17 @@ Shader "Testing/Background"
                 return OUT;
             }
 
-            fixed4 fragmentFunc(v2f IN, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
+            float4 fragmentFunc(v2f IN, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
             {
-                fixed4 pixelColor = tex2D(_MainTexture, IN.uv);
-                fixed2 diff = screenPos - _Ball;
+                float4 pixelColor = tex2D(_MainTexture, (screenPos/1920+_Time.x)%1);
+                float2 diff = screenPos - _Ball;
                 float mod = sqrt(diff.x*diff.x + diff.y*diff.y);
-                diff = diff/mod;
-                mod = mod*-1*(dot(diff,_Vel)+1)/10;
-                fixed4 outColor = {sin(mod/2),sin(mod/3),sin(mod/6),1.0};
-                return outColor;
+                float savemod = mod/64;
+                diff = diff/mod + pixelColor;
+                savemod *= dot(diff,_Vel)+0.6;
+                mod = mod*(dot(diff,_Vel)+1)/10;
+                float4 outColor = {(sin(mod/2+_Time.y*7)+1)/2,(sin(mod/3-_Time.y*4)+1)/2,(sin(mod/6+_Time.y*10)+1)/2,0.5};
+                return outColor*max(1-savemod,0);
             }
 
             ENDCG

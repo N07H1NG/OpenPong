@@ -25,10 +25,9 @@ public class BGBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 targetVel = ballComp.GetVelocity().normalized;
-        lastVel = Vector3.RotateTowards(lastVel, targetVel,Time.deltaTime*4,100).normalized;
+        Vector3 targetVel = ballComp.GetVelocity()/50;
+        lastVel = Vector3.MoveTowards(lastVel, targetVel,Time.deltaTime*4);
         myMeshRenderer.material.SetVector("_Ball",CamComp.WorldToScreenPoint(Ball.transform.position));
         myMeshRenderer.material.SetVector("_Vel",lastVel);
-        print(ballComp.GetVelocity().normalized);
     }
 }
