@@ -32,7 +32,7 @@ public class BallBehaviour : MonoBehaviour
 
     public void GetHit(Vector3 power)
     {
-        velocity += power;
+        velocity = (velocity+power).normalized * velocity.magnitude;
     }
 
     /// <summary>
@@ -45,5 +45,10 @@ public class BallBehaviour : MonoBehaviour
         ContactPoint2D contact = other.GetContact(0);
         velocity = Vector3.Reflect(velocity,contact.normal);
 
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return velocity;
     }
 }
