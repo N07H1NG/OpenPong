@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Experimental.AI;
 using UnityEngine.UIElements;
 
@@ -26,8 +28,7 @@ public class BGBehaviour : MonoBehaviour
     void Update()
     {
         Vector3 targetVel = ballComp.GetVelocity()/50;
-        lastVel = Vector3.MoveTowards(lastVel, targetVel,Time.deltaTime*4);
-        myMeshRenderer.material.SetVector("_Ball",CamComp.WorldToScreenPoint(Ball.transform.position));
-        myMeshRenderer.material.SetVector("_Vel",lastVel);
+        lastVel = Vector3.MoveTowards(lastVel, targetVel,Time.deltaTime*5);
+        transform.rotation = Quaternion.LookRotation(lastVel,Vector3.back);
     }
 }
