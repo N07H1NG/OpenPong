@@ -83,11 +83,12 @@ Shader "Unlit/NewUnlitShader"
                 float4 color = tex2D(_MainTex,i.uv);
                 float brightness = get_brightness(color);
                 float brightness_offset = floor(brightness/_SectorSize)*_SectorSize;
-                float2 sampleuv = float2((screenPos.x/8%16)/16,(screenPos.y/8%16/16));
+                float2 sampleuv = float2((screenPos.x%32)/32,(screenPos.y%32/32));
                 float4 dither = tex2D(_DitherTex, sampleuv);
                 float4 tex = tex2D(_DitherTex,i.uv);
                 bool dith = brightness>=dither;
-                return mul(unity_ObjectToWorld,i.pos);
+                return dith;
+                return float4(sampleuv,0,1);
             }
             ENDCG
         }

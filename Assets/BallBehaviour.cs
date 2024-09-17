@@ -6,7 +6,10 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 public class BallBehaviour : MonoBehaviour
 {
+    public int score;
     Vector3 velocity;
+    public bool bucket = false;
+    AudioSource bounce;
     [SerializeField] float default_speed = 10;
     CircleCollider2D myCollider;
     /// <summary>
@@ -19,9 +22,11 @@ public class BallBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //float ang = math.radians(Random.Range(0,360));
-        //velocity = new Vector3(math.cos(ang), math.sin(ang), 0) * default_speed;
-        velocity = new Vector3(default_speed,0,0);
+        bounce = GetComponent<AudioSource>();
+        float ang = math.radians(Random.Range(45,-45));
+        velocity = new Vector3(math.cos(ang), math.sin(ang), 0) * default_speed;
+        //velocity = new Vector3(default_speed,0,0);
+        score = 0;
     }
 
     // Update is called once per frame
@@ -32,7 +37,10 @@ public class BallBehaviour : MonoBehaviour
 
     public void GetHit(Vector3 power)
     {
-        velocity = (velocity+power).normalized * velocity.magnitude;
+        print((1-math.dot(power.normalized,velocity.normalized)));
+        velocity = (2*velocity+power*(1-math.dot(power.normalized,velocity.normalized))).normalized * velocity.magnitude;
+        score +=1;
+        bounce.Play();
     }
 
     /// <summary>
@@ -43,7 +51,10 @@ public class BallBehaviour : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         ContactPoint2D contact = other.GetContact(0);
-        velocity = Vector3.Reflect(velocity,contact.normal);
+        CollisionRedefenition(contact.normal);
+        //ContactPoint2D contact = other.GetContact(0);
+        //velocity = Vector3.Reflect(velocity,contact.normal);
+        //bounce.Play();
 
     }
 
@@ -51,4 +62,9 @@ public class BallBehaviour : MonoBehaviour
     {
         return velocity;
     }
+
+    public void CollisionRedefenition(Vector3 normal){
+        velocity = Vector3.Reflect(velocity,normal);
+        
+    } 
 }

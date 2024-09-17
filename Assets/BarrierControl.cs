@@ -9,6 +9,8 @@ public class BarrierControl : MonoBehaviour
     BoxCollider2D myCollider;
     [SerializeField] float halfDistance;
     [SerializeField] float speed;
+    [SerializeField] float faloff = 2.5f;
+    [SerializeField] float speedup = 2.5f;
     float progress = 0;
     float enemyDirection = 1;
     Vector3 endpoint1;
@@ -30,7 +32,7 @@ public class BarrierControl : MonoBehaviour
         enemyDirection = math.sign(Input.GetAxis("Horizontal"));
         if (enemyDirection == 0)
         {
-            mySpeed -= math.min(2.5f*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
+            mySpeed -= math.min(faloff*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
             
         }
         else if (enemyDirection!= math.sign(mySpeed))
@@ -39,7 +41,7 @@ public class BarrierControl : MonoBehaviour
         }
         else
         {
-            mySpeed += 2.5f*Time.deltaTime*enemyDirection;
+            mySpeed += speedup*Time.deltaTime*enemyDirection;
         }
         progress += mySpeed*speed*Time.deltaTime;
 
@@ -56,6 +58,7 @@ public class BarrierControl : MonoBehaviour
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
         {
             plrComponent.GetHit(mySpeed*transform.up*speed*halfDistance);
+            //print(mySpeed*transform.up*speed*halfDistance);
         }
 
     }
