@@ -16,7 +16,7 @@ public class CameraBehaviour : MonoBehaviour
     Camera myCamera;
     Vector2 windowSize;
     Vector2 windowPos = new Vector2(0,0);
-    Vector2 screenReference;
+    Vector2Int screenReference;
     Vector2 roomHalfSize;
     Vector2 targetSquare = new Vector2(0,0);
     Vector3 oldposition  = new Vector2(0,0);
@@ -53,7 +53,7 @@ public class CameraBehaviour : MonoBehaviour
         {
             float progressRescaled = MathHelper.EaseInOutBesier(movementProgress);
             transform.position = Vector3.Lerp(oldposition,SquareToPosition(targetSquare), progressRescaled);
-            Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position));
+            Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
             if (movementProgress == 1)
             {
                 moving = false;
@@ -62,6 +62,7 @@ public class CameraBehaviour : MonoBehaviour
             movementProgress = math.clamp(movementProgress,0,1);
         }
 
+        screenReference = Screen.mainWindowPosition-PositionToScreenPosition(transform.position);
     }
 
     Vector3 SquareToPosition(Vector2 square)
@@ -72,7 +73,7 @@ public class CameraBehaviour : MonoBehaviour
     Vector2Int PositionToScreenPosition(Vector3 pos){
         Vector2 tmp = new Vector2(pos.x,-1*pos.y);
         tmp = windowSize*tmp/(2*roomHalfSize);
-        tmp += screenReference;
+        //tmp += screenReference;
         Vector2Int res = new Vector2Int((int)tmp.x, (int)tmp.y);
         return res;
     }

@@ -31,7 +31,7 @@ public class ScoreManagementLose : MonoBehaviour
         {
             if ((plrComponent.score >= limit || plrComponent.bucket)&&iAmRed){
                 if (!plrComponent.bucket){
-                    plrComponent.score -= limit;
+                    plrComponent.score = 0;
                     glass.Play();
                 }
                 else{
