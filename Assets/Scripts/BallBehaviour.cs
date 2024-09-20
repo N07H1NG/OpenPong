@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Timeline;
 using Random = UnityEngine.Random;
 public class BallBehaviour : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class BallBehaviour : MonoBehaviour
     AudioSource bounce;
     [SerializeField] float default_speed = 10;
     CircleCollider2D myCollider;
+    Rigidbody2D myrigidBody;
+    public Vector3 force = new Vector3(0,0,0);
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -25,6 +28,9 @@ public class BallBehaviour : MonoBehaviour
         bounce = GetComponent<AudioSource>();
         float ang = math.radians(Random.Range(45,-45));
         velocity = new Vector3(math.cos(ang), math.sin(ang), 0) * default_speed;
+        myrigidBody = GetComponent<Rigidbody2D>();
+        myrigidBody.velocity = velocity;
+        myrigidBody.WakeUp();
         //velocity = new Vector3(default_speed,0,0);
         score = 0;
     }
@@ -32,7 +38,17 @@ public class BallBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += velocity*Time.deltaTime;
+        if (velocity.magnitude != default_speed && force.magnitude == 0){
+            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 10*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
+            velocity = velocity.normalized * (velocity.magnitude - diff);
+            print("correcting");
+        }
+        else{
+            print(velocity.magnitude);
+        }
+        velocity+= force*Time.deltaTime;
+        myrigidBody.velocity = velocity;
+        //transform.position += velocity*Time.deltaTime;
     }
 
     public void GetHit(Vector3 power)

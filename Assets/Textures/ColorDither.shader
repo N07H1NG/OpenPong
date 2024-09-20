@@ -87,24 +87,12 @@ Shader "Unlit/NewUnlitShader"
 
             float4 frag (v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
             {
-                // sample the texture
-                
                 float4 color = tex2D(_MainTex,i.uv);
-                //float4 br = get_brightness(color);
-                //float4 br = color;
-                //float4 band = floor(br*_Divisions)/_Divisions;
-                //float4 next_band = ceil(br*_Divisions)/_Divisions;
-                //float4 relative = inverse_lerp(br,band,next_band);
                 float2 sampleuv = float2((_PatternScale*screenPos.x%32)/32,(_PatternScale*screenPos.y%32/32));
                 float4 dither = tex2D(_DitherTex, sampleuv);
-                //float4 rel = relative>dither;
-                
-                //return rel;
-                //return rel*next_band+ (1-rel)*band;
-
-                bool dithred = color.r>=dither;
-                bool dithgreed = color.g>=dither;
-                bool dithblue = color.b>=dither;
+                bool dithred = color.r>dither;
+                bool dithgreed = color.g>dither;
+                bool dithblue = color.b>dither;
                 return float4(dithred,dithgreed,dithblue,1);
             }
             ENDCG

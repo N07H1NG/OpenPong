@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 
 public class CameraBehaviour : MonoBehaviour
 {
+    //[ExecuteInEditMode]
     [SerializeField] GameObject ball;
     [SerializeField] float cameraSpeed;
     BallBehaviour ballData;
@@ -61,8 +62,9 @@ public class CameraBehaviour : MonoBehaviour
             movementProgress += cameraSpeed*Time.deltaTime;
             movementProgress = math.clamp(movementProgress,0,1);
         }
-
-        screenReference = Screen.mainWindowPosition-PositionToScreenPosition(transform.position);
+        else{
+            screenReference = Screen.mainWindowPosition-PositionToScreenPosition(transform.position);
+        }
     }
 
     Vector3 SquareToPosition(Vector2 square)

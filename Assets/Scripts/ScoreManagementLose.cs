@@ -29,9 +29,9 @@ public class ScoreManagementLose : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
         {
-            if ((plrComponent.score >= limit || plrComponent.bucket)&&iAmRed){
+            
+            if ((plrComponent.score >= limit) && (plrComponent.bucket||iAmRed)){
                 if (!plrComponent.bucket){
-                    plrComponent.score = 0;
                     glass.Play();
                 }
                 else{
@@ -40,10 +40,10 @@ public class ScoreManagementLose : MonoBehaviour
             }
             else{
                 //plrComponent.score = math.max(plrComponent.score-1,0);
-                plrComponent.score = 0;
                 beep.Play();
                 plrComponent.CollisionRedefenition(transform.right);
             }
+            plrComponent.score = 0;
         }
     }
 }
