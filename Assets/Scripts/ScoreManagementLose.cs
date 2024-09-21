@@ -3,17 +3,31 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
-
+[ExecuteInEditMode]
 public class ScoreManagementLose : MonoBehaviour
 {
+    
     [SerializeField] int limit;
     AudioSource beep;
     AudioSource glass;
     AudioSource water;
-    [SerializeField]bool iAmRed=true;
+    bool iAmGreen=false;
+    bool iAmBlue=false;
     // Start is called before the first frame update
     void Start()
     {
+        
+        if (limit <= 5){
+            GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else if (limit <=10){
+            GetComponent<SpriteRenderer>().color = Color.green;
+            iAmGreen = true;
+        }
+        else if (limit<=15){
+            GetComponent<SpriteRenderer>().color = Color.blue;
+            iAmBlue = true;
+        }
         beep = GetComponents<AudioSource>()[0];
         glass = GetComponents<AudioSource>()[1];
         water = GetComponents<AudioSource>()[2];
@@ -30,20 +44,17 @@ public class ScoreManagementLose : MonoBehaviour
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
         {
             
-            if ((plrComponent.score >= limit) && (plrComponent.bucket||iAmRed)){
-                if (!plrComponent.bucket){
-                    glass.Play();
-                }
-                else{
-                    water.Play();
-                }
+            if ((plrComponent.score >= limit)&&(!iAmGreen||plrComponent.greenBucket)&&(!iAmBlue||plrComponent.blueBucket)){
+                glass.Play();
+                plrComponent.score -= limit;
             }
             else{
                 //plrComponent.score = math.max(plrComponent.score-1,0);
                 beep.Play();
                 plrComponent.CollisionRedefenition(transform.right);
+                plrComponent.score = 0;
             }
-            plrComponent.score = 0;
+            
         }
     }
 }

@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _Degree: 0.663
     m_Colors:
-    - _Degree: {r: 1, g: 1, b: 0, a: 1}
+    - _Degree: {r: 8.02, g: 1, b: 0, a: 1}
     - _MainColor: {r: 0.3043404, g: 0.59599996, b: 0.5864893, a: 1}
     - _PlayerScreenPosition: {r: 1, g: 1, b: 1, a: 1}
     - _SecondColor: {r: 0, g: 0.10023519, b: 0.426, a: 1}

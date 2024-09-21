@@ -70,14 +70,15 @@ Shader "Unlit/NewUnlitShader"
                 i.uv -=0.5;
                 float2 seconduv = i.uv/fwidth(i.uv)/64;
                 float2 edgedist = 0.5/fwidth(i.uv)/64- abs(seconduv);
+                float vertdist = edgedist.y;
                 edgedist = min(edgedist.x,edgedist.y);
-                float edgedistunsaturated = edgedist;
+                float edgedistunsaturated = vertdist;
                 edgedist = saturate(edgedist);
                 //return edgedist.x;
                 float4 grab_recentered = i.grabPos;
                 grab_recentered /= float4(32,32,1,1);
                 grab_recentered -=float4(0.5,0.5,0,0);
-                grab_recentered *= float4(1+noiseValue.xy*edgedist*1.2,1,1);
+                grab_recentered *= float4(1+noiseValue.xy*edgedist*0.5,1,1);
                 grab_recentered +=float4(0.5,0.5,0,0);
                 grab_recentered *= float4(32,32,1,1);
                 //return grab_recentered;
@@ -87,27 +88,35 @@ Shader "Unlit/NewUnlitShader"
                 //i.grabPos +=float4(noiseValue.x,noiseValue.y,0,noiseValue.z*10);
                 // i.grabPos 
                 float4 col = tex2Dproj(_BackgroundTexture, grab_recentered);
+                float reflectionPos = i.grabPos.y/i.grabPos.w;
+                reflectionPos += 2*vertdist*64/360;
+                reflectionPos *= i.grabPos.w;
+                float4 reflection = tex2Dproj(_BackgroundTexture, float4(grab_recentered.x,reflectionPos,grab_recentered.zw));
+                //return reflectionPos;
+                //return reflection;
                 //return col;
                 //float4 usecolor = lerp(_MainColor,_SecondColor, );
                 //return usecolor;
                 //return 1 - edgedist.x*2;
                 
-                float deg = (1- edgedistunsaturated.x*16);
+                float deg = (1- edgedistunsaturated.x*8);
                 //return deg;
                 float2 map = float2(seconduv.x,deg.x*2-1);
                 float wave1 =sin(map.x*3+_Time.y*1);
-                float wave2 =sin(map.x*6-_Time.y*4)/2.5;
+                float wave2 =sin(map.x*5-_Time.y*4)/2.5;
                 
                 float colorchoose = saturate(((wave1+wave2-0.8)-map.y)/60);
                 //return colorchoose;
                 colorchoose = lerp(colorchoose,edgedistunsaturated/2+noiseValue/4,edgedistunsaturated/4);
                 //return colorchoose;
-                colorchoose = saturate(colorchoose+noiseValue.x*0.0);
+                colorchoose = saturate(colorchoose);
                 // /return colorchoose;
+                //colorchoose= abs(colorchoose-0.1);
                 float4 usecolor = lerp(_MainColor,_SecondColor, colorchoose);
-                //return usecolor;
+                usecolor = lerp(reflection,usecolor,0.1+colorchoose);
+                
                 bool edge = map.y<wave1+wave2-0.8;
-                float4 water = col*(0.2+0.8*usecolor)+usecolor*0.02;
+                float4 water = col*(0.2+0.8*usecolor)+usecolor*0.04;
                 //return usecolor;
                 // return water;
                 return lerp(bg,water,edge);

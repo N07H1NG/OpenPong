@@ -21,14 +21,25 @@ public class ScoreTextScript : MonoBehaviour
         baseColor = tM.color;
     }
 
+    Color SineColorMix(Color col1,Color col2,float var){
+        return col1*(1+math.sin(math.radians(var)))*0.5f + col2*(1-math.sin(math.radians(var)))*0.5f;
+    }
+
     // Update is called once per frame
     void Update()
     {
         tM.text = ball.score.ToString();
-        if (ball.score >=10){
+        if (ball.score >=5){
+            Color flashcolor = Color.red;
+            if (ball.score>=10 && ball.greenBucket){
+                flashcolor = SineColorMix(flashcolor,Color.green,timer*2);
+            }
+            if (ball.score>=15 && ball.blueBucket){
+                flashcolor = SineColorMix(flashcolor,Color.blue,timer*4);
+            }
             timer += Time.deltaTime*360;
             timer %= 360;
-            tM.color = baseColor*(1+math.sin(math.radians(timer)))*0.5f + Color.red*(1-math.sin(math.radians(timer)))*0.5f;
+            tM.color = SineColorMix(baseColor,flashcolor,timer);
         }
         else{
             tM.color = baseColor;

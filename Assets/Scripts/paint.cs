@@ -19,7 +19,7 @@ public class paint : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent)){
-            plrComponent.bucket = true;
+            plrComponent.greenBucket = true;
             plrComponent.GetComponent<SpriteRenderer>().color = new Color(0,0,1,1);
             GetComponent<AudioSource>().Play();
         }

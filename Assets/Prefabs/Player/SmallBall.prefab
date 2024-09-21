@@ -49,7 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  bucket: 0
   default_speed: 10
+  force: {x: 0, y: 0, z: 0}
 --- !u!212 &-630573685757329441
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -1,14 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Water : MonoBehaviour
 {
     [SerializeField]Vector3 myForce = new Vector3(0,0,0); 
+    [SerializeField]GameObject splashPrefab;
     BoxCollider2D myBox;
+    AudioSource waterAudio;
+    AudioSource splashAudio;
+    GameObject mySplash;
+    [SerializeField] MyAudioCue splashCue;
     // Start is called before the first frame update
     void Start()
     {
+        waterAudio = GetComponents<AudioSource>()[0];
+        splashAudio = GetComponents<AudioSource>()[1];
+        mySplash = Instantiate(splashPrefab);
     }
 
     // Update is called once per frame
@@ -25,7 +34,16 @@ public class Water : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<BallBehaviour>(out BallBehaviour bhvr)){
+            Vector3 vel = -1*bhvr.GetVelocity();
+            mySplash.transform.position = other.transform.position-vel*Time.deltaTime;
+            Quaternion rot = Quaternion.LookRotation(vel,Vector3.Cross(Vector3.up,vel));
+            mySplash.transform.rotation = rot;
+            mySplash.GetComponent<ParticleSystem>().Play();  
             bhvr.force += myForce;
+            float vol = bhvr.GetVelocity().magnitude/32;
+            splashAudio.volume = vol;
+            waterAudio.Play();
+            splashAudio.PlayOneShot(splashCue.GetRandomClip());
         }
     }
 
@@ -37,7 +55,17 @@ public class Water : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent<BallBehaviour>(out BallBehaviour bhvr)){
+            Vector3 vel = bhvr.GetVelocity();
+            mySplash.transform.position = other.transform.position-vel*Time.deltaTime;
+            
+            Quaternion rot = Quaternion.LookRotation(vel,Vector3.Cross(Vector3.up,vel));
+            mySplash.transform.rotation = rot;
+            mySplash.GetComponent<ParticleSystem>().Play();  
             bhvr.force -= myForce;
+            float vol = bhvr.GetVelocity().magnitude/32;
+            splashAudio.volume = vol;
+            waterAudio.Stop();
+            splashAudio.PlayOneShot(splashCue.GetRandomClip());
         }
     }
 }

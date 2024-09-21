@@ -9,7 +9,8 @@ public class BallBehaviour : MonoBehaviour
 {
     public int score;
     Vector3 velocity;
-    public bool bucket = false;
+    [SerializeField]public bool greenBucket = false;
+    [SerializeField]public bool blueBucket = false;
     AudioSource bounce;
     [SerializeField] float default_speed = 10;
     CircleCollider2D myCollider;
@@ -38,13 +39,10 @@ public class BallBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print(velocity.magnitude);
         if (velocity.magnitude != default_speed && force.magnitude == 0){
-            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 10*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
+            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
             velocity = velocity.normalized * (velocity.magnitude - diff);
-            print("correcting");
-        }
-        else{
-            print(velocity.magnitude);
         }
         velocity+= force*Time.deltaTime;
         myrigidBody.velocity = velocity;
@@ -54,7 +52,7 @@ public class BallBehaviour : MonoBehaviour
     public void GetHit(Vector3 power)
     {
         print((1-math.dot(power.normalized,velocity.normalized)));
-        velocity = (2*velocity+power*(1-math.dot(power.normalized,velocity.normalized))).normalized * velocity.magnitude;
+        velocity = (2*velocity+power*(1-math.dot(power.normalized,velocity.normalized))).normalized * math.max(velocity.magnitude,default_speed);
         score +=1;
         bounce.Play();
     }
@@ -80,7 +78,7 @@ public class BallBehaviour : MonoBehaviour
     }
 
     public void CollisionRedefenition(Vector3 normal){
-        velocity = Vector3.Reflect(velocity,normal);
+        velocity = Vector3.Reflect(velocity,normal).normalized*math.min(velocity.magnitude,default_speed);
         
     } 
 }
