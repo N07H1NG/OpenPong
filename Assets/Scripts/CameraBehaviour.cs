@@ -85,8 +85,8 @@ public class CameraBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="src">The source RenderTexture.</param>
     /// <param name="dest">The destination RenderTexture.</param>
-    //void OnRenderImage(RenderTexture src, RenderTexture dest)
-    //{
-        //Graphics.Blit(src, postProcessMaterial);
-    //}
+    void OnRenderImage(RenderTexture src, RenderTexture dest)
+    {
+        Graphics.Blit(src, postProcessMaterial);
+    }
 }

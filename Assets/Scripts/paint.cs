@@ -20,7 +20,7 @@ public class paint : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent)){
             plrComponent.greenBucket = true;
-            plrComponent.GetComponent<SpriteRenderer>().color = new Color(0,0,1,1);
+            plrComponent.GetComponent<SpriteRenderer>().color = new Color(0,1,0,1);
             GetComponent<AudioSource>().Play();
         }
     }

@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   halfDistance: 0
-  speed: 0
-  faloff: 2.5
-  speedup: 2.5
+  speed: 1
+  faloff: 6
+  speedup: 6
   ballObject: {fileID: 0}
