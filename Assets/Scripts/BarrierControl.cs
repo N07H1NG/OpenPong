@@ -30,7 +30,6 @@ public class BarrierControl : MonoBehaviour
     {
         
         enemyDirection = math.sign(Input.GetAxis("Horizontal"));
-        print(Input.GetAxis("Horizontal"));
         if (enemyDirection == 0)
         {
             mySpeed -= math.min(faloff*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
@@ -59,7 +58,6 @@ public class BarrierControl : MonoBehaviour
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
         {
             plrComponent.GetHit(mySpeed*transform.up*speed*halfDistance);
-            //print(mySpeed*transform.up*speed*halfDistance);
         }
 
     }

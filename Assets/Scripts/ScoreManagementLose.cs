@@ -13,6 +13,7 @@ public class ScoreManagementLose : MonoBehaviour
     AudioSource water;
     bool iAmGreen=false;
     bool iAmBlue=false;
+    bool flyThrough;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,8 +46,7 @@ public class ScoreManagementLose : MonoBehaviour
         {
             
             if ((plrComponent.score >= limit)&&(!iAmGreen||plrComponent.greenBucket)&&(!iAmBlue||plrComponent.blueBucket)){
-                glass.Play();
-                plrComponent.score -= limit;
+                flyThrough = true;
             }
             else{
                 //plrComponent.score = math.max(plrComponent.score-1,0);
@@ -56,5 +56,17 @@ public class ScoreManagementLose : MonoBehaviour
             }
             
         }
+    }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent)){
+            if (flyThrough){
+                flyThrough = false;
+                glass.Play();
+                plrComponent.score -= limit;
+                plrComponent.score = math.max(plrComponent.score,0);
+            }
+        }
+        
     }
 }
