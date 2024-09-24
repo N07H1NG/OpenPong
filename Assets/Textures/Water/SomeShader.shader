@@ -85,7 +85,7 @@ Shader "Unlit/NewUnlitShader"
 
                 float4 col = tex2Dproj(_BackgroundTexture, grab_recentered);
                 float reflectionPos = i.grabPos.y/i.grabPos.w;
-                reflectionPos += 2*vertdist*64/360;
+                reflectionPos += sign(i.uv.y)*2*vertdist*64/360;
                 reflectionPos *= i.grabPos.w;
                 float4 reflection = tex2Dproj(_BackgroundTexture, float4(grab_recentered.x,reflectionPos,grab_recentered.zw));
 

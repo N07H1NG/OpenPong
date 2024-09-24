@@ -33,7 +33,7 @@ public class BallBehaviour : MonoBehaviour
         myRigidBody.velocity = velocity;
         myRigidBody.WakeUp();
         //velocity = new Vector3(default_speed,0,0);
-        score = 0;
+        //score = 30;
     }
 
     // Update is called once per frame

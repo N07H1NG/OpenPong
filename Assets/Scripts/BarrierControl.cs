@@ -30,6 +30,7 @@ public class BarrierControl : MonoBehaviour
     {
         
         enemyDirection = math.sign(Input.GetAxis("Horizontal"));
+        print(Input.GetAxis("Horizontal"));
         if (enemyDirection == 0)
         {
             mySpeed -= math.min(faloff*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
