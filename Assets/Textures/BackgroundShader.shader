@@ -53,7 +53,7 @@ Shader "Testing/Background"
             {
                 float2 diff = (0.5-IN.uv)*190;
                 float mod = sqrt(diff.x*diff.x + diff.y*diff.y);
-                float savemod = sqrt(diff.x*diff.x + diff.y*diff.y);
+                //float savemod = sqrt(diff.x*diff.x + diff.y*diff.y);
                 float2 dir = float2(0,-1);
                 float pixelColor = tex2D(_MainTexture, frac(IN.uv*0.6+_Time.x*3*dir));
                 float pixelColor2 = tex2D(_MainTexture, frac(IN.uv/8+_Time.x*2*dir));
@@ -61,10 +61,10 @@ Shader "Testing/Background"
                 //mod = mod*((dot(diff,_Vel)+1)/10+pixelColor);
                 float mod2 = mod*((dot(diff,_Vel)+1)/8+pixelColor2);
                 mod = mod*((dot(diff,_Vel)+1)+pixelColor*4+pixelColor2*6);
-                float coef1 = (sin(mod-_Time.y*2)+1)/3+0.2;
-                float coef2 = (sin(mod*2-_Time.y*3)+1)/3+0.2;
-                float coef3 = (sin(mod*3-_Time.y*5)+1)/3+0.2;
-                float4 outColor = coef1 * _Colour + coef2 * _Colour1 + coef3 *_Colour2;
+                //float coef1 = (sin(mod-_Time.y*2)+1)/3+0.2;
+                //float coef2 = (sin(mod-_Time.y*3)+1)/3+0.2;
+                //float coef3 = (sin(mod-_Time.y*5)+1)/3+0.2;
+                float4 outColor = _Colour;
                 //outColor = outColor*saturate(1-mod2*mod2*mod/100)*_Colour;
                 outColor.a = saturate(1-mod2*mod/50);
                 //return -1*dot(diff,_Vel)*abs(dot(diff,_Vel));

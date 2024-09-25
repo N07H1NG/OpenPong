@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor.MPE;
+using Unity.VisualScripting; 
 using UnityEngine;
 using UnityEngine.Timeline;
 using Random = UnityEngine.Random;
@@ -61,6 +60,9 @@ public class BallBehaviour : MonoBehaviour
             scoreLimit = 10;
         }
         score = math.min(score,scoreLimit);
+        if (score == scoreLimit){
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
         bounce.Play();
     }
 
