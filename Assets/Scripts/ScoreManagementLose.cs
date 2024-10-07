@@ -11,8 +11,6 @@ public class ScoreManagementLose : MonoBehaviour
     AudioSource beep;
     AudioSource glass;
     AudioSource water;
-    bool iAmGreen=false;
-    bool iAmBlue=false;
     bool flyThrough;
     // Start is called before the first frame update
     void Start()
@@ -23,11 +21,11 @@ public class ScoreManagementLose : MonoBehaviour
         }
         else if (limit <=10){
             GetComponent<SpriteRenderer>().color = Color.green;
-            iAmGreen = true;
+            
         }
         else if (limit<=15){
             GetComponent<SpriteRenderer>().color = Color.blue;
-            iAmBlue = true;
+            
         }
         beep = GetComponents<AudioSource>()[0];
         glass = GetComponents<AudioSource>()[1];
@@ -45,13 +43,16 @@ public class ScoreManagementLose : MonoBehaviour
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
         {
             
-            if ((plrComponent.score >= limit)&&(!iAmGreen||plrComponent.greenBucket)&&(!iAmBlue||plrComponent.blueBucket)){
+            if (plrComponent.score >= limit){
                 flyThrough = true;
             }
             else{
                 //plrComponent.score = math.max(plrComponent.score-1,0);
                 beep.Play();
-                plrComponent.CollisionRedefenition(transform.right);
+                Vector3 sidevector = plrComponent.oldposition-gameObject.transform.position;
+                float side = math.dot(transform.right,sidevector);
+                side = math.sign(side);
+                plrComponent.CollisionRedefenition(transform.right*side);
                 plrComponent.score = 0;
             }
             

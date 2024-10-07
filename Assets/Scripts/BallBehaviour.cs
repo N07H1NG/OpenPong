@@ -7,12 +7,13 @@ using UnityEngine.Timeline;
 using Random = UnityEngine.Random;
 public class BallBehaviour : MonoBehaviour
 {
+    public Vector3 oldposition;
     public int score;
     Vector3 velocity;
     [SerializeField]public bool greenBucket = false;
     [SerializeField]public bool blueBucket = false;
     AudioSource bounce;
-    int scoreLimit = 5;
+    public int scoreLimit = 5;
     [SerializeField] float default_speed = 10;
     CircleCollider2D myCollider;
     Rigidbody2D myRigidBody;
@@ -27,6 +28,7 @@ public class BallBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Screen.SetResolution(640,360,false);
         bounce = GetComponent<AudioSource>();
         float ang = math.radians(Random.Range(45,-45));
         velocity = new Vector3(math.cos(ang), math.sin(ang), 0) * default_speed;
@@ -40,6 +42,7 @@ public class BallBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        oldposition = transform.position;
         if (velocity.magnitude != default_speed){
             float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
             velocity = velocity.normalized * (velocity.magnitude - diff);
@@ -47,11 +50,15 @@ public class BallBehaviour : MonoBehaviour
         velocity+= force*Time.deltaTime;
         myRigidBody.velocity = velocity;
         //transform.position += velocity*Time.deltaTime;
+
+        if (Input.GetKeyDown("space")){
+            score = scoreLimit;
+        }
     }
 
     public void GetHit(Vector3 power)
     {
-        velocity = (1.5f*velocity+power*(1-math.dot(power.normalized,velocity.normalized))).normalized * math.max(velocity.magnitude,default_speed);
+        velocity = (2.1f*velocity+power*(1-math.dot(power.normalized,velocity.normalized))).normalized * math.max(velocity.magnitude,default_speed);
         score +=1;
         if (blueBucket){
             scoreLimit = 15;
@@ -60,9 +67,6 @@ public class BallBehaviour : MonoBehaviour
             scoreLimit = 10;
         }
         score = math.min(score,scoreLimit);
-        if (score == scoreLimit){
-            transform.GetChild(0).gameObject.SetActive(true);
-        }
         bounce.Play();
     }
 
@@ -75,6 +79,7 @@ public class BallBehaviour : MonoBehaviour
     { 
         ContactPoint2D contact = other.GetContact(0);
         CollisionRedefenition(contact.normal);
+        
     }
 
     public Vector3 GetVelocity()
@@ -83,13 +88,16 @@ public class BallBehaviour : MonoBehaviour
     }
 
     public void CollisionRedefenition(Vector3 normal){
-        print("Collide");
-        normal = Vector3.Project(-1*velocity,normal).normalized;
-        Vector3 reflected = Vector3.Reflect(velocity,normal).normalized;
-        if (Vector3.Project(reflected,normal).magnitude <0.1f){
-            reflected = (Vector3.ProjectOnPlane(reflected,normal) + normal*0.1f).normalized;
+        //print("Collide");
+        if(math.dot(velocity,normal)<=0){
+            normal = Vector3.Project(-1*velocity,normal).normalized;
+            Vector3 reflected = Vector3.Reflect(velocity,normal).normalized;
+            if (Vector3.Project(reflected,normal).magnitude <0.1f){
+                reflected = (Vector3.ProjectOnPlane(reflected,normal) + normal*0.1f).normalized;
+            }
+            velocity = reflected*math.max(velocity.magnitude,default_speed);
+            //print(reflected);
+            //GetComponents<AudioSource>()[1].Play();
         }
-        velocity = reflected*math.max(velocity.magnitude,default_speed);
-        
     } 
 }

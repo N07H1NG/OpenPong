@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor;
+
 //using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
@@ -13,27 +15,27 @@ public class CameraBehaviour : MonoBehaviour
     //[ExecuteInEditMode]
     [SerializeField] GameObject ball;
     [SerializeField] float cameraSpeed;
-    BallBehaviour ballData;
     Camera myCamera;
     Vector2 windowSize;
-    Vector2 windowPos = new Vector2(0,0);
     Vector2Int screenReference;
+    Vector2Int res;
     Vector2 roomHalfSize;
     Vector2 targetSquare = new Vector2(0,0);
     Vector3 oldposition  = new Vector2(0,0);
     bool moving = false;
     float movementProgress= 0;
+    bool stretch = false;
     [SerializeField] Material postProcessMaterial;
+    //[SerializeField] RenderTexture rndrtxt;
     
     // Start is called before the first frame update
     void Start()
     {
-        ballData = ball.GetComponent<BallBehaviour>();
         myCamera = gameObject.GetComponent<Camera>();
         //windowSize = new Vector2(myCamera.orthographicSize*myCamera.aspect, myCamera.orthographicSize);
-
+        res = new Vector2Int(640,360);
         roomHalfSize = new Vector2(-1*transform.position.z, -1*transform.position.z/myCamera.aspect);
-        windowSize =  new Vector2(Screen.width, Screen.width/myCamera.aspect);
+        windowSize =  new Vector2(res.x, res.y);
         screenReference = Screen.mainWindowPosition;
         //print(roomHalfSize);
     }
@@ -62,9 +64,14 @@ public class CameraBehaviour : MonoBehaviour
             movementProgress += cameraSpeed*Time.deltaTime;
             movementProgress = math.clamp(movementProgress,0,1);
         }
-        else{
+        else if (new Vector2Int(Screen.width,Screen.height)  != res){
+            Screen.SetResolution((int)math.ceil(res.x),(int)math.ceil(res.y),false);
+            Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
+        }
+        else if (!stretch){
             screenReference = Screen.mainWindowPosition-PositionToScreenPosition(transform.position);
         }
+
     }
 
     Vector3 SquareToPosition(Vector2 square)
@@ -88,5 +95,32 @@ public class CameraBehaviour : MonoBehaviour
     void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
         Graphics.Blit(src, postProcessMaterial);
+        
+    }
+
+
+    public void Grow(){
+        StartCoroutine(StretchResolution());
+    }
+    
+    IEnumerator StretchResolution(){
+        
+        int w = Screen.width;
+        int h = Screen.height;
+        float z = transform.position.z;
+        stretch = true;
+        for (float i = 1.0f; i<=2.0f;i+=0.05f){
+            transform.position =new Vector3(transform.position.x,transform.position.y, z*i);
+            Vector2Int offset = new Vector2Int((int)math.ceil(w*i),(int)math.ceil(h*i)) - res;
+            res = new Vector2Int((int)math.ceil(w*i),(int)math.ceil(h*i));
+            //Screen.SetResolution((int)math.ceil(w*i),(int)math.ceil(h*i),false);
+            screenReference-= offset/2;
+            //Screen.SetResolution((int)math.ceil(res.x),(int)math.ceil(res.y),false);
+            //Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
+            yield return new WaitForSeconds(0.05f);
+        }
+        stretch = false;
+        
+
     }
 }

@@ -1,4 +1,4 @@
-Shader "Unlit/NewUnlitShader"
+Shader "PostProcess/ColorDither "
 {
     Properties
     {
@@ -88,7 +88,7 @@ Shader "Unlit/NewUnlitShader"
             float4 frag (v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
             {
                 float4 color = tex2D(_MainTex,i.uv);
-                float2 sampleuv = float2((_PatternScale*screenPos.x%32)/32,(_PatternScale*screenPos.y%32/32));
+                float2 sampleuv = float2((_PatternScale*_ScreenParams.x*i.uv.x%32)/32,(_PatternScale*_ScreenParams.y*i.uv.y%32/32));
                 float4 dither = tex2D(_DitherTex, sampleuv);
                 bool dithred = color.r>dither;
                 bool dithgreed = color.g>dither;

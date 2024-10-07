@@ -2,26 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class paint : MonoBehaviour
+public class paint : Upgrade
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.Rotate(Vector3.up,Time.deltaTime*90);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent)){
-            plrComponent.greenBucket = true;
-            plrComponent.GetComponent<SpriteRenderer>().color = new Color(0,1,0,1);
-            GetComponent<AudioSource>().Play();
-        }
+    public override void Effect(BallBehaviour plr){
+        plr.scoreLimit +=5;
     }
 }
