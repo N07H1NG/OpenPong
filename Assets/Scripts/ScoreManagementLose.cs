@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
-[ExecuteInEditMode]
+using UnityEngine.Events;
 public class ScoreManagementLose : MonoBehaviour
 {
     
@@ -12,21 +12,35 @@ public class ScoreManagementLose : MonoBehaviour
     AudioSource glass;
     AudioSource water;
     bool flyThrough;
+    bool scared;
+    void IAmScared(int score)
+    {
+        scared = score>=limit;
+        if(scared){
+            GetComponent<Collider2D>().isTrigger = true;
+            GetComponentInChildren<MeshRenderer>().material.SetFloat("_Shake",1.0f);
+        }
+        else{
+            GetComponent<Collider2D>().isTrigger = false;
+            GetComponentInChildren<MeshRenderer>().material.SetFloat("_Shake",0.0f);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        BallBehaviour.scareEvent.AddListener(IAmScared);
+        GetComponentInChildren<MeshRenderer>().material.EnableKeyword("_EMISSION");
         if (limit <= 5){
             
-            GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor",Color.red);
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor",Color.red/3);
         }
         else if (limit <=10){
             
-            GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor",Color.green);
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor",Color.green/3);
             
         }
         else if (limit<=15){
-            GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor",Color.blue);
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor",Color.blue/3);
             
         }
         beep = GetComponents<AudioSource>()[0];
@@ -49,7 +63,6 @@ public class ScoreManagementLose : MonoBehaviour
                 flyThrough = true;
             }
             else{
-                //plrComponent.score = math.max(plrComponent.score-1,0);
                 beep.Play();
                 Vector3 sidevector = plrComponent.olderposition-gameObject.transform.position;
                 float side = math.dot(transform.right,sidevector);
@@ -68,8 +81,22 @@ public class ScoreManagementLose : MonoBehaviour
                 glass.Play();
                 plrComponent.score -= limit;
                 plrComponent.score = math.max(plrComponent.score,0);
+                BallBehaviour.scareEvent.Invoke(0);
             }
         }
         
     }
+
+
+    void OnCollisionEnter2D(Collision2D other){
+        if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
+        {
+                beep.Play();
+                plrComponent.score = 0;
+                BallBehaviour.scareEvent.Invoke(0);
+        }
+
+    }
+
+    
 }

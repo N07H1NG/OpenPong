@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class OnOff : MonoBehaviour
 {
     [SerializeField]bool isItOn = false;
@@ -12,14 +11,7 @@ public class OnOff : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<BarrierControl>().enabled = isItOn;
-        GetComponent<Collider2D>().enabled = isItOn;
-        if(isItOn){
-            GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
-        }
-        else{
-            GetComponent<SpriteRenderer>().color = new Color(0.2f,0.2f,0.2f,0.2f);
-        }
+        ChangeState(isItOn);
     }
 
     // Update is called once per frame
@@ -33,10 +25,13 @@ public class OnOff : MonoBehaviour
         GetComponent<BarrierControl>().enabled = isItOn;
         GetComponent<Collider2D>().enabled = isItOn;
         if(isItOn){
-            GetComponent<SpriteRenderer>().color = new Color(0.3064703f,0.9150943f,0.4862813f,1);
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color",new Color(0.7346249f,0,1,1.0f));
+            
+            //GetComponent<SpriteRenderer>().color = new Color(0.3064703f,0.9150943f,0.4862813f,1);
         }
         else{
-            GetComponent<SpriteRenderer>().color = new Color(0.2f,0.2f,0.2f,0.2f);
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color",new Color(0.2f,0.2f,0.2f,0.2f));
+            //GetComponent<SpriteRenderer>().color = new Color(0.2f,0.2f,0.2f,0.2f);
         }
     }
 

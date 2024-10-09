@@ -4,9 +4,15 @@ using Unity.Mathematics;
 using Unity.VisualScripting; 
 using UnityEngine;
 using UnityEngine.Timeline;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
+public class MyIntEvent : UnityEvent <int> {}
+
+
 public class BallBehaviour : MonoBehaviour
 {
+    public static MyIntEvent scareEvent = new MyIntEvent();
+
     public Vector3 oldposition;
     public Vector3 olderposition;
     public int score;
@@ -64,6 +70,7 @@ public class BallBehaviour : MonoBehaviour
 
         if (Input.GetKeyDown("space")){
             score = scoreLimit;
+            scareEvent.Invoke(score);
         }
     }
 
@@ -71,13 +78,8 @@ public class BallBehaviour : MonoBehaviour
     {
         velocity = (2.1f*velocity+power*(1-math.dot(power.normalized,velocity.normalized))).normalized * math.max(velocity.magnitude,default_speed);
         score +=1;
-        if (blueBucket){
-            scoreLimit = 15;
-        }
-        else if(greenBucket){
-            scoreLimit = 10;
-        }
         score = math.min(score,scoreLimit);
+        scareEvent.Invoke(score);
         bounce.Play();
     }
 

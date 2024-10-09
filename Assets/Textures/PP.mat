@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: 1fb6ab2015935dd47af019f24ea9082e, type: 2}
+        m_Texture: {fileID: 2800000, guid: b40c453cdffbb2840bac839e69000e8d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTexture:
-        m_Texture: {fileID: 2800000, guid: 2bf2eff62f4b0bd4891e789c4fe980a4, type: 3}
+        m_Texture: {fileID: 2800000, guid: cbebc93cc3adfbf42b9514b4de7123bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -85,8 +85,8 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NoiseAmount: 0
-    - _NoisePoint: -0.49
-    - _NoiseScale: 6
+    - _NoisePoint: 0.069
+    - _NoiseScale: 0.25
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PatternScale: 1

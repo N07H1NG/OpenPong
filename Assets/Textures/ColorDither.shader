@@ -14,7 +14,7 @@ Shader "PostProcess/ColorDither "
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags {"PreviewType"="Plane" "RenderType"="Opaque" }
         LOD 100
 
         Pass
