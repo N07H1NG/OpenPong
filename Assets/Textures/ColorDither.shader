@@ -4,9 +4,13 @@ Shader "PostProcess/ColorDither "
     {
         _DitherTex ("DitherTexture", 2D) = "white" {}
         _MainTex ("Main Texture", 2D) = "whine" {}
-        _SectorSize ("Sector", Range(0,1)) = 0.2
+        _NoiseTexture("Noise Texture", 2D) = "white" {}
         _PatternScale("Scale",Range(0,1)) = 1
-        _Divisions("Divisions", Range(1,16)) = 1
+        _NoiseAmount("Noise Amount",Range(-3,3)) = 1
+        _NoisePoint("Noise Point",Range(-1,1)) = 0
+        _DitherPoint("Dither Point",Range(-1,1)) = 0
+        _NoiseScale("Noise Scale",Range(0,6))=1
+
     }
     SubShader
     {
@@ -35,10 +39,12 @@ Shader "PostProcess/ColorDither "
 
             sampler2D _DitherTex;
             sampler2D _MainTex;
-            float _SectorSize;
             float _PatternScale;
-            float _Divisions;
-
+            sampler2D _NoiseTexture;
+            float _NoiseAmount;
+            float _NoisePoint;
+            float _DitherPoint;
+            float _NoiseScale;
             v2f vert (appdata v, out float4 outposition : SV_POSITION)
             {
                 v2f o;
@@ -88,8 +94,14 @@ Shader "PostProcess/ColorDither "
             float4 frag (v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
             {
                 float4 color = tex2D(_MainTex,i.uv);
-                float2 sampleuv = float2((_PatternScale*_ScreenParams.x*i.uv.x%32)/32,(_PatternScale*_ScreenParams.y*i.uv.y%32/32));
+                float2 sampleuv = float2(((_PatternScale*_ScreenParams.x*i.uv.x)%32)/32,((_PatternScale*_ScreenParams.y*i.uv.y)%32/32));
+                
                 float4 dither = tex2D(_DitherTex, sampleuv);
+                dither += _DitherPoint;
+                float4 noise = tex2D(_NoiseTexture, i.uv*_NoiseScale+_Time.x);
+                noise +=_NoisePoint;
+                dither -= noise*_NoiseAmount;
+                //return dither;
                 bool dithred = color.r>dither;
                 bool dithgreed = color.g>dither;
                 bool dithblue = color.b>dither;

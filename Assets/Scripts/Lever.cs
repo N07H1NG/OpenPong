@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -34,10 +35,18 @@ public class Lever : MonoBehaviour
 
     public void ReceiveChange(bool state){
         if (state){
-            transform.rotation = Quaternion.Euler(new Vector3(0,180,0));
+            GetComponentInChildren<Animation>()["Scene"].speed = 1.0f;
+            GetComponentInChildren<Animation>().Play();
+            //transform.rotation = Quaternion.Euler(new Vector3(-15,0,-90));
         }
         else{
-            transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+            if(!GetComponentInChildren<Animation>().IsPlaying("Scene")){
+                GetComponentInChildren<Animation>().Play();
+                GetComponentInChildren<Animation>()["Scene"].normalizedTime = 1;
+            }
+            GetComponentInChildren<Animation>()["Scene"].speed = -1;
+            GetComponentInChildren<Animation>().Play();
+            //transform.rotation = Quaternion.Euler(new Vector3(15,-180,-90));
         }
 
     }

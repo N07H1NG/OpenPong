@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class BallBehaviour : MonoBehaviour
 {
     public Vector3 oldposition;
+    public Vector3 olderposition;
     public int score;
     Vector3 velocity;
     [SerializeField]public bool greenBucket = false;
@@ -15,7 +16,7 @@ public class BallBehaviour : MonoBehaviour
     AudioSource bounce;
     public int scoreLimit = 5;
     [SerializeField] float default_speed = 10;
-    CircleCollider2D myCollider;
+
     Rigidbody2D myRigidBody;
     public Vector3 force = new Vector3(0,0,0);
     /// <summary>
@@ -23,7 +24,6 @@ public class BallBehaviour : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        myCollider = GetComponent<CircleCollider2D>();
     }
     // Start is called before the first frame update
     void Start()
@@ -40,9 +40,20 @@ public class BallBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
+     /// <summary>
+    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void FixedUpdate()
+    {
+        olderposition = oldposition;
+        //print("My position was " + oldposition.ToString());
+        oldposition = transform.position;
+
+        //print("I updated my position and now its" + oldposition.ToString());
+    }
     void Update()
     {
-        oldposition = transform.position;
+        //oldposition = transform.position;
         if (velocity.magnitude != default_speed){
             float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
             velocity = velocity.normalized * (velocity.magnitude - diff);
@@ -88,6 +99,15 @@ public class BallBehaviour : MonoBehaviour
     }
 
     public void CollisionRedefenition(Vector3 normal){
+        //if (transform.position != oldposition){
+        //    print("collision mismatch" + transform.position.ToString() + " and " + oldposition.ToString() + " whilemoving at " + velocity);
+        //}
+        //else{
+        //    print("collision match");
+        //}
+        //print(updated);
+        //print("I collide and my position is" + transform.position.ToString());
+        //print("While my remembered position is" + oldposition.ToString());
         //print("Collide");
         if(math.dot(velocity,normal)<=0){
             normal = Vector3.Project(-1*velocity,normal).normalized;

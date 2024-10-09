@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3917789721215988295}
   - component: {fileID: 6401785381443963292}
   - component: {fileID: 2327055147027068192}
+  - component: {fileID: 7863123774497167232}
   m_Layer: 0
   m_Name: WaterVolume
   m_TagString: Untagged
@@ -339,3 +340,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7863123774497167232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4265773929522842482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c495cc9a5b20c4419051039736a52db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightObject: {fileID: 5821262893713177876, guid: 29bdff489b2f8184fb8b91535491bdbb, type: 3}

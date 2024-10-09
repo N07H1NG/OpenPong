@@ -27,6 +27,10 @@ public class FlyRandomly : MonoBehaviour
         velocity *= speed;
         //borders = new Vector2[xborders,yborders,zborders];
         borders = new Vector2[] {xborders,yborders,zborders};
+        for (int i = 0; i<3; i++){
+            borders[i].x += transform.position[i];
+            borders[i].y += transform.position[i];
+        }
 
     }
 
