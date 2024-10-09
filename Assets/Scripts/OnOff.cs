@@ -20,7 +20,7 @@ public class OnOff : MonoBehaviour
         
     }
 
-    public void ChangeState(bool state){
+    public virtual void ChangeState(bool state){
         isItOn = state;
         GetComponent<BarrierControl>().enabled = isItOn;
         GetComponent<Collider2D>().enabled = isItOn;

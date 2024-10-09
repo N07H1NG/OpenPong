@@ -45,8 +45,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0, g: 1, b: 0.8202615, a: 1}
-  m_Intensity: 1
-  m_Range: 50
+  m_Intensity: 0.8
+  m_Range: 35
   m_SpotAngle: 160
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ff77f27283d8b43ab30c21f2bdd258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 9
   xborders: {x: -20, y: 20}
-  yborders: {x: -5, y: 20}
+  yborders: {x: -15, y: 5}
   zborders: {x: -5, y: 5}

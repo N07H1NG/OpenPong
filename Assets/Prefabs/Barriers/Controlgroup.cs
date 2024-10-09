@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Controlgroup : MonoBehaviour
 {
-    bool groupState = false;
+    [SerializeField]bool groupState = false;
     [SerializeField] GameObject[] controlled;
     OnOff[] controlledOnOff;
     [SerializeField] GameObject[] controllers;

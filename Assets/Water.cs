@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 public class Water : MonoBehaviour
@@ -11,6 +12,7 @@ public class Water : MonoBehaviour
     AudioSource waterAudio;
     AudioSource splashAudio;
     GameObject mySplash;
+    ParticleSystem splashSystem;
     [SerializeField] MyAudioCue splashCue;
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,7 @@ public class Water : MonoBehaviour
         waterAudio = GetComponents<AudioSource>()[0];
         splashAudio = GetComponents<AudioSource>()[1];
         mySplash = Instantiate(splashPrefab);
+        splashSystem = mySplash.GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -38,9 +41,9 @@ public class Water : MonoBehaviour
             mySplash.transform.position = other.transform.position-vel*Time.deltaTime;
             Quaternion rot = Quaternion.LookRotation(vel,Vector3.Cross(Vector3.up,vel));
             mySplash.transform.rotation = rot;
-            mySplash.GetComponent<ParticleSystem>().Play();  
+            splashSystem.Play(); 
             bhvr.force += myForce;
-            float vol = bhvr.GetVelocity().magnitude/32;
+            float vol = vel.magnitude/32;
             splashAudio.volume = vol;
             waterAudio.Play();
             splashAudio.PlayOneShot(splashCue.GetRandomClip());
@@ -60,9 +63,9 @@ public class Water : MonoBehaviour
             
             Quaternion rot = Quaternion.LookRotation(vel,Vector3.Cross(Vector3.up,vel));
             mySplash.transform.rotation = rot;
-            mySplash.GetComponent<ParticleSystem>().Play();  
+            splashSystem.Play();  
             bhvr.force -= myForce;
-            float vol = bhvr.GetVelocity().magnitude/32;
+            float vol = vel.magnitude/32;
             splashAudio.volume = vol;
             waterAudio.Stop();
             splashAudio.PlayOneShot(splashCue.GetRandomClip());
