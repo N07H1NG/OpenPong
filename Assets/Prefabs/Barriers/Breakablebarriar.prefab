@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limit: 5
+  infsound: {fileID: 8300000, guid: 25d5f39b2b10d734ebe734c785291af7, type: 3}
 --- !u!82 &9098282718384582501
 AudioSource:
   m_ObjectHideFlags: 0
@@ -361,7 +362,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4e08f9e7b55928d40aea897747ce4b77, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -8,6 +8,7 @@ public class ScoreManagementLose : MonoBehaviour
 {
     
     [SerializeField] int limit;
+    [SerializeField] AudioClip infsound;
     AudioSource beep;
     AudioSource glass;
     AudioSource water;
@@ -23,6 +24,10 @@ public class ScoreManagementLose : MonoBehaviour
         else{
             GetComponent<Collider2D>().isTrigger = false;
             GetComponentInChildren<MeshRenderer>().material.SetFloat("_Shake",0.0f);
+        }
+
+        if (score >=30){
+            glass.clip = infsound;
         }
     }
     // Start is called before the first frame update
@@ -79,9 +84,12 @@ public class ScoreManagementLose : MonoBehaviour
             if (flyThrough){
                 flyThrough = false;
                 glass.Play();
-                plrComponent.score -= limit;
-                plrComponent.score = math.max(plrComponent.score,0);
-                BallBehaviour.scareEvent.Invoke(0);
+                if (!plrComponent.infinity){
+                    plrComponent.score -= limit;
+                    plrComponent.score = math.max(plrComponent.score,0);
+                }
+                
+                BallBehaviour.scareEvent.Invoke(plrComponent.score);
             }
         }
         
@@ -92,6 +100,7 @@ public class ScoreManagementLose : MonoBehaviour
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent))
         {
                 beep.Play();
+                
                 plrComponent.score = 0;
                 BallBehaviour.scareEvent.Invoke(0);
         }

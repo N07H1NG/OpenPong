@@ -28,13 +28,18 @@ public class ScoreTextScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        tM.text = ball.score.ToString();
+        if (!ball.infinity){
+            tM.text = ball.score.ToString();
+        }
+        else{
+            tM.text = "∞";
+        }
         if (ball.score >=5){
             Color flashcolor = Color.red;
-            if (ball.score>=10 && ball.greenBucket){
+            if (ball.score>=10 ){
                 flashcolor = SineColorMix(flashcolor,Color.green,timer*2);
             }
-            if (ball.score>=15 && ball.blueBucket){
+            if (ball.score>=15){
                 flashcolor = SineColorMix(flashcolor,Color.blue,timer*4);
             }
             timer += Time.deltaTime*360;

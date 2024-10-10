@@ -21,6 +21,7 @@ public class BallBehaviour : MonoBehaviour
     [SerializeField]public bool blueBucket = false;
     AudioSource bounce;
     public int scoreLimit = 5;
+    public bool infinity;
     [SerializeField] float default_speed = 10;
 
     Rigidbody2D myRigidBody;
