@@ -8787,7 +8787,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: "\u221E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8820,7 +8820,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 1000
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -8877,6 +8877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerObject: {fileID: 643939841}
+  rainbow: {fileID: 2800000, guid: 7c7e56cdb3994d943ad8e1f852eb81cd, type: 3}
 --- !u!1001 &720727467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14141,6 +14142,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2283014310236469682, guid: 398d7f045bbd533488839b7b1c2322e6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2283014310236469682, guid: 398d7f045bbd533488839b7b1c2322e6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6753627368853335845, guid: 398d7f045bbd533488839b7b1c2322e6, type: 3}
       propertyPath: m_Name
       value: ControlBarrier (51)
@@ -14175,7 +14184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8890230647987381244, guid: 398d7f045bbd533488839b7b1c2322e6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 124
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 8890230647987381244, guid: 398d7f045bbd533488839b7b1c2322e6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17958,14 +17967,14 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a2abd8a0f17029442bf7b3aa83bde102, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.65
+  m_Volume: 0.18
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 5
+  DopplerLevel: 2
   MinDistance: 0
   MaxDistance: 29
   Pan2D: 0
@@ -19532,11 +19541,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500823762107413118, guid: 16256e183ff23ae4faf55e6a88326936, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 76
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8500823762107413118, guid: 16256e183ff23ae4faf55e6a88326936, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8500823762107413118, guid: 16256e183ff23ae4faf55e6a88326936, type: 3}
       propertyPath: m_LocalPosition.z
