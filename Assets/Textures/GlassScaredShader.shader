@@ -48,8 +48,8 @@ Shader "Custom/GlassShakeShader"
             //float n = tex2D(_Noise, v.yz);
             float4 worldvert = float4(mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1.0)).xyz,1.0);
             float4 newworldvert = float4(worldvert);
-            newworldvert.y +=0.5*_Shake*sin(_Time.w*6+worldvert.x/4);
-            newworldvert.x +=0.5*_Shake*sin(_Time.w*6+worldvert.y/4);
+            newworldvert.y +=0.3*_Shake*sin(_Time.w*6+worldvert.x/4);
+            newworldvert.x +=0.3*_Shake*sin(_Time.w*6+worldvert.y/4);
             //newworldvert.xy += _Shake*sin(_Time.w*6+1.4*worldvert.yx);
             v.vertex.xyz = mul(unity_WorldToObject, float4(newworldvert.xyz, 1.0)).xyz;
             //v.vertex.x += _Shake*sin(_Time.z+worldvert.x*worldvert.y);

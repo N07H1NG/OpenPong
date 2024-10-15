@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class OnOff : MonoBehaviour
 {
-    [SerializeField]bool isItOn = false;
+    [SerializeField]public bool isItOn = false;
     [SerializeField] Color onColor;
     [SerializeField] Color offColor;
     // Start is called before the first frame update
