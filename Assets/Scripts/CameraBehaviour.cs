@@ -37,7 +37,7 @@ public class CameraBehaviour : MonoBehaviour
         roomHalfSize = new Vector2(-1*transform.position.z, -1*transform.position.z/myCamera.aspect);
         windowSize =  new Vector2(res.x, res.y);
         screenReference = Screen.mainWindowPosition;
-        //print(roomHalfSize);
+        
     }
 
     // Update is called once per frame
@@ -64,10 +64,10 @@ public class CameraBehaviour : MonoBehaviour
             movementProgress += cameraSpeed*Time.deltaTime;
             movementProgress = math.clamp(movementProgress,0,1);
         }
-        else if (new Vector2Int(Screen.width,Screen.height)  != res){
-            Screen.SetResolution((int)math.ceil(res.x),(int)math.ceil(res.y),false);
-            Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
-        }
+        //else if (new Vector2Int(Screen.width,Screen.height)  != res){
+            //Screen.SetResolution((int)math.ceil(res.x),(int)math.ceil(res.y),false);
+            //Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
+        //}
         else if (!stretch){
             screenReference = Screen.mainWindowPosition-PositionToScreenPosition(transform.position);
         }
@@ -115,6 +115,8 @@ public class CameraBehaviour : MonoBehaviour
             res = new Vector2Int((int)math.ceil(w*i),(int)math.ceil(h*i));
             //Screen.SetResolution((int)math.ceil(w*i),(int)math.ceil(h*i),false);
             screenReference-= offset/2;
+            Screen.SetResolution((int)math.ceil(res.x),(int)math.ceil(res.y),false);
+            Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
             //Screen.SetResolution((int)math.ceil(res.x),(int)math.ceil(res.y),false);
             //Screen.MoveMainWindowTo(Screen.mainWindowDisplayInfo,PositionToScreenPosition(transform.position)+screenReference);
             yield return new WaitForSeconds(0.05f);

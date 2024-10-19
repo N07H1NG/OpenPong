@@ -60,7 +60,7 @@ public class ScoreTextScript : MonoBehaviour
         else{
             tM.color = baseColor;
             timer = 180;
-            print(math.sin(math.PI/2+4*math.radians(timer)));
+            //print(math.sin(math.PI/2+4*math.radians(timer)));
         }
     }
 }

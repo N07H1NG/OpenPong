@@ -25,7 +25,23 @@ public class dogtrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<BallBehaviour>(out BallBehaviour ball)){
-            dog.SetActive(true);
+            dog.GetComponent<DogControl>().triggered = true;
+
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.TryGetComponent<BallBehaviour>(out BallBehaviour ball)){
+            if (!ball.key){
+                DogControl d = dog.GetComponent<DogControl>();
+                d.following = false;
+                if (!d.carrying){
+                    d.point = d.respawn;
+                }
+                d.triggered = false;
+            }
+            
         }
     }
 }

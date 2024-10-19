@@ -21,7 +21,8 @@ public class BallBehaviour : MonoBehaviour
     [SerializeField]public bool blueBucket = false;
     AudioSource bounce;
     public int scoreLimit = 5;
-    public bool infinity;
+    public bool infinity = false;
+    public bool key = false;
     [SerializeField] float default_speed = 10;
 
     Rigidbody2D myRigidBody;
@@ -53,10 +54,10 @@ public class BallBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         olderposition = oldposition;
-        //print("My position was " + oldposition.ToString());
+
         oldposition = transform.position;
 
-        //print("I updated my position and now its" + oldposition.ToString());
+        
     }
     void Update()
     {
@@ -102,16 +103,7 @@ public class BallBehaviour : MonoBehaviour
     }
 
     public void CollisionRedefenition(Vector3 normal){
-        //if (transform.position != oldposition){
-        //    print("collision mismatch" + transform.position.ToString() + " and " + oldposition.ToString() + " whilemoving at " + velocity);
-        //}
-        //else{
-        //    print("collision match");
-        //}
-        //print(updated);
-        //print("I collide and my position is" + transform.position.ToString());
-        //print("While my remembered position is" + oldposition.ToString());
-        //print("Collide");
+       
         if(math.dot(velocity,normal)<=0){
             normal = Vector3.Project(-1*velocity,normal).normalized;
             Vector3 reflected = Vector3.Reflect(velocity,normal).normalized;
@@ -119,7 +111,6 @@ public class BallBehaviour : MonoBehaviour
                 reflected = (Vector3.ProjectOnPlane(reflected,normal) + normal*0.1f).normalized;
             }
             velocity = reflected*math.max(velocity.magnitude,default_speed);
-            //print(reflected);
             //GetComponents<AudioSource>()[1].Play();
         }
     } 
