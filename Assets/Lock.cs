@@ -32,7 +32,8 @@ public class Lock : MonoBehaviour
                 key.GetComponent<MeshRenderer>().enabled = true;
                 GetComponentInChildren<Animation>().Play();
                 GetComponent<AudioSource>().Play();
-                wall.GetComponent<lockedwall>().Open();
+                wall.GetComponent<lockedwall>().StartOpen();
+                Destroy(gameObject,4.5f);
             }
 
         }

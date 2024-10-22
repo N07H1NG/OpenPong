@@ -13,11 +13,19 @@ public class lockedwall : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour ball)){
             GetComponent<AudioSource>().Play();
+            GetComponentInChildren<Animation>().Play("Hit");
 
         }
     }
 
-    public void Open(){
+    public void StartOpen(){
+        StartCoroutine(Open());
+    }
+    IEnumerator Open(){
+        yield return new WaitForSeconds(4.2f);
+        GetComponentInChildren<Animation>()["Open"].speed = 0.5f;
+        GetComponentInChildren<Animation>().Play("Open");
+        yield return new WaitForSeconds(0.2f);
         GetComponent<Collider2D>().enabled = false;
     }
 }
