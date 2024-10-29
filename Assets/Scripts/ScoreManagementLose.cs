@@ -51,6 +51,7 @@ public class ScoreManagementLose : MonoBehaviour
         beep = GetComponents<AudioSource>()[0];
         glass = GetComponents<AudioSource>()[1];
         water = GetComponents<AudioSource>()[2];
+        IAmScared(0);
     }
 
     // Update is called once per frame

@@ -17,7 +17,7 @@ public class BallBehaviour : MonoBehaviour
 
     //public Vector3 oldposition;
     //public Vector3 olderposition;
-    public int score;
+    public int score = 0;
     Vector3 velocity;
     [SerializeField]public bool greenBucket = false;
     [SerializeField]public bool blueBucket = false;
