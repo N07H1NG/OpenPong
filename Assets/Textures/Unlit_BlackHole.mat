@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Degree: 116.98
-    - _Radius: 19.9
+    - _Degree: 774.55
+    - _Radius: -1.7
     m_Colors:
     - _Degree: {r: 0, g: 0, b: 0, a: 0}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}

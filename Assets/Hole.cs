@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ public class Hole : MonoBehaviour
     bool active = false;
     BallBehaviour ball;
     bool applied = false;
+    float timer = 0;
+    float radius;
+    [SerializeField] Vector3 choice;
     Vector3 current_force = Vector3.zero;
     // Start is called before the first frame update
     
@@ -21,6 +25,8 @@ public class Hole : MonoBehaviour
         if(other.TryGetComponent<BallBehaviour>(out BallBehaviour brvr)){
             ball = brvr;
             active = true;
+            timer = 0f;
+            radius = (transform.position - ball.transform.position).magnitude;
         }
     }
 
@@ -34,6 +40,7 @@ public class Hole : MonoBehaviour
         if(other.TryGetComponent<BallBehaviour>(out BallBehaviour brvr)){
             ball = brvr;
             active = false;
+            
         }
     }
 
@@ -43,13 +50,24 @@ public class Hole : MonoBehaviour
     void FixedUpdate()
     {
         if (active){
+            timer += 1f*Time.deltaTime;
             if (applied){
                 ball.force -= current_force;
             }
             Vector3 d = transform.position - ball.transform.position;
-            current_force = 3*d.normalized*math.pow(d.magnitude,0.5f);
+            d.z=0;
+            float p = math.clamp((GetComponent<Collider2D>().bounds.extents.y-d.magnitude)/(GetComponent<Collider2D>().bounds.extents.y),0f,1f);
+            print(p);
+            current_force = d.normalized*0.1f*(GetComponent<Collider2D>().bounds.extents.y)/d.magnitude*d.magnitude;
+            
+            current_force += 0.1f*d*(0.5f-Vector3.Dot(ball.GetVelocity().normalized,d.normalized));
+            current_force -= 0.4f*math.pow(p,2.7f)*Vector3.ProjectOnPlane(ball.GetVelocity(),d.normalized);
             ball.force += current_force;
             applied = true;
+            if (d.magnitude < 3f){
+                StartCoroutine(Teleport());
+            }
+            GetComponent<AudioSource>().spatialBlend = 1.2f-p;
         }
         else{
             if(applied){
@@ -58,5 +76,11 @@ public class Hole : MonoBehaviour
             }
         }
         
+    }
+
+    IEnumerator Teleport(){
+        ball.transform.position = choice;
+        active = false;
+        yield return null;
     }
 }

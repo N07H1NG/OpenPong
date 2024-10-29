@@ -67,6 +67,7 @@ public class ScoreManagementLose : MonoBehaviour
             
             if (plrComponent.score >= limit){
                 flyThrough = true;
+                plrComponent.passing +=1;
             }
             else{
                 //
@@ -90,7 +91,7 @@ public class ScoreManagementLose : MonoBehaviour
                     plrComponent.score -= limit;
                     plrComponent.score = math.max(plrComponent.score,0);
                 }
-                
+                plrComponent.passing -=1;
                 BallBehaviour.scareEvent.Invoke(plrComponent.score);
             }
         }

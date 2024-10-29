@@ -125,4 +125,10 @@ public class CameraBehaviour : MonoBehaviour
         
 
     }
+
+    public void Warp(Vector3 pos){
+        transform.position = pos;
+        oldposition = Vector2.zero;
+        screenReference = screenReference = Screen.mainWindowPosition-PositionToScreenPosition(transform.position);
+    }
 }

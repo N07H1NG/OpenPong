@@ -25,6 +25,8 @@ public class BallBehaviour : MonoBehaviour
     public int scoreLimit = 5;
     public bool infinity = false;
     public bool key = false;
+
+    public int passing = 0;
     [SerializeField] float default_speed = 10;
 
     Rigidbody2D myRigidBody;
@@ -59,7 +61,9 @@ public class BallBehaviour : MonoBehaviour
             float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.fixedDeltaTime) * math.sign(velocity.magnitude-default_speed);
             velocity = velocity.normalized * (velocity.magnitude - diff);
         }
-        velocity+= force*Time.fixedDeltaTime;
+        if (passing==0){
+            velocity+= force*Time.fixedDeltaTime;
+        }
         myRigidBody.velocity = velocity;
         //olderposition = oldposition;
 

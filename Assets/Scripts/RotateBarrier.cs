@@ -50,7 +50,6 @@ public class RotateControl : MonoBehaviour,IPush
             progress = math.clamp(progress,-0.5f,0.5f);
         }
         transform.rotation = Quaternion.Euler(0f,0f,math.lerp(45f,-45f,progress+0.5f))*startrot;
-        print(progress+0.5f);
     }
 
     //public void PushMe(BallBehaviour plrComponent)
