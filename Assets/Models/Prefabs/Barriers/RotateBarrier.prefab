@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8779f8d427bc4db409d663c02118e0bd, type: 2}
+  - {fileID: 2100000, guid: 0fd3cabbd7e69ac459966fca5e47327b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 8890230647987381244}
   - component: {fileID: 9192949757341913773}
   - component: {fileID: 5316820607315911418}
-  - component: {fileID: 6830084618905890827}
+  - component: {fileID: 7310767450043580482}
   m_Layer: 0
-  m_Name: ControlBarrier
+  m_Name: RotateBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,7 +215,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6830084618905890827
+--- !u!114 &7310767450043580482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,11 +224,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6753627368853335845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91ce99c764cd90a47b9ef41c0d3024da, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e234aebb187ef942866f8ed8f7bf27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  halfDistance: 0
-  speed: 1
-  faloff: 6
-  speedup: 2
+  speed: 0
+  faloff: 2.5
+  speedup: 2.5
   ballObject: {fileID: 0}

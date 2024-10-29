@@ -68,12 +68,13 @@ public class ScoreManagementLose : MonoBehaviour
                 flyThrough = true;
             }
             else{
-                beep.Play();
-                Vector3 sidevector = plrComponent.olderposition-gameObject.transform.position;
-                float side = math.dot(transform.right,sidevector);
-                side = math.sign(side);
-                plrComponent.CollisionRedefenition(transform.right*side);
-                plrComponent.score = 0;
+                //
+                //eep.Play();
+                //ector3 sidevector = plrComponent.olderposition-gameObject.transform.position;
+                //loat side = math.dot(transform.right,sidevector);
+                //ide = math.sign(side);
+                //lrComponent.CollisionRedefenition(transform.right*side);
+                //lrComponent.score = 0;
             }
             
         }

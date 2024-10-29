@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
+using UnityEditor;
+using System;
 public class MyIntEvent : UnityEvent <int> {}
 
 
@@ -13,8 +15,8 @@ public class BallBehaviour : MonoBehaviour
 {
     public static MyIntEvent scareEvent = new MyIntEvent();
 
-    public Vector3 oldposition;
-    public Vector3 olderposition;
+    //public Vector3 oldposition;
+    //public Vector3 olderposition;
     public int score;
     Vector3 velocity;
     [SerializeField]public bool greenBucket = false;
@@ -53,21 +55,22 @@ public class BallBehaviour : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        olderposition = oldposition;
+        if (velocity.magnitude != default_speed){
+            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.fixedDeltaTime) * math.sign(velocity.magnitude-default_speed);
+            velocity = velocity.normalized * (velocity.magnitude - diff);
+        }
+        velocity+= force*Time.fixedDeltaTime;
+        myRigidBody.velocity = velocity;
+        //olderposition = oldposition;
 
-        oldposition = transform.position;
+        //oldposition = transform.position;
 
         
     }
     void Update()
     {
         //oldposition = transform.position;
-        if (velocity.magnitude != default_speed){
-            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
-            velocity = velocity.normalized * (velocity.magnitude - diff);
-        }
-        velocity+= force*Time.deltaTime;
-        myRigidBody.velocity = velocity;
+        
         //transform.position += velocity*Time.deltaTime;
 
         if (Input.GetKeyDown("space")){
@@ -93,7 +96,13 @@ public class BallBehaviour : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     { 
         ContactPoint2D contact = other.GetContact(0);
-        CollisionRedefenition(contact.normal);
+        //throw new System.Exception();
+        Vector3 n = Vector3.Project(transform.position - new Vector3(contact.point.x,contact.point.y,0),contact.normal).normalized;
+        CollisionRedefenition(n);
+        if (other.gameObject.TryGetComponent<IPush>(out IPush ip)){
+            ip.PushMe(this);
+        }
+        
         
     }
 

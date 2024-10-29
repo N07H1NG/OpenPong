@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class dogtrigger : MonoBehaviour
 {
-    [SerializeField]GameObject dog;
+    [SerializeField]DogControl dog;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +25,10 @@ public class dogtrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<BallBehaviour>(out BallBehaviour ball)){
-            dog.GetComponent<DogControl>().triggered = true;
+            dog.triggered = true;
+            if (!dog.carrying){
+                dog.following = true;
+            }
 
         }
     }
@@ -34,12 +37,12 @@ public class dogtrigger : MonoBehaviour
     {
         if (other.TryGetComponent<BallBehaviour>(out BallBehaviour ball)){
             if (!ball.key){
-                DogControl d = dog.GetComponent<DogControl>();
-                d.following = false;
-                if (!d.carrying){
-                    d.point = d.respawn;
+                
+                dog.following = false;
+                if (!dog.carrying){
+                    dog.point = dog.respawn;
                 }
-                d.triggered = false;
+                dog.triggered = false;
             }
             
         }

@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 
 public class DogControl : MonoBehaviour
 {
+    public bool keyInPlace = true;
     public bool triggered = false;
     [SerializeField] GameObject mouth;
     Vector3 direction = new Vector3 (1,0,0);
@@ -18,6 +19,7 @@ public class DogControl : MonoBehaviour
     Animator myAnimator;
     [SerializeField] List<Material> nicematerial ;
     [SerializeField] List<Material> evilmaterial;
+    [SerializeField] GameObject Key;
     bool evilstate = true;
     bool jump = false;
     public Vector3 respawn;
@@ -27,13 +29,13 @@ public class DogControl : MonoBehaviour
     public Vector3 point;
     bool jumpDelay;
     [SerializeField] GameObject spawn;
-    Vector3 playerCheckpoint;
+    //Vector3 playerCheckpoint;
     // Start is called before the first frame update
     void Start()
     {
         myAnimator = GetComponent<Animator>();
         respawn = transform.position;
-        playerCheckpoint = new Vector3(0,0,0);
+        //playerCheckpoint = new Vector3(0,0,0);
     }
 
     // Update is called once per frame
@@ -45,7 +47,7 @@ public class DogControl : MonoBehaviour
             point = ball.transform.position;
         }
         else{
-            if ((transform.position - point).magnitude <= 20){
+            if ((new Vector2(transform.position.x,transform.position.y) - new Vector2(point.x,point.y)).magnitude <= 1){
                 if (carrying){
                     ball.transform.SetParent(null,true);
                     ball.GetComponent<Rigidbody2D>().WakeUp();
@@ -54,10 +56,15 @@ public class DogControl : MonoBehaviour
                     ball.transform.position= new Vector3(ball.transform.position.x,ball.transform.position.y,0);
                     following = false;
                     carrying = false;
+                    triggered = false;
                     point = respawn;
                     //point = new Vector3(UnityEngine.Random.Range(-90f,154f),UnityEngine.Random.Range(348,444f),0);
                 }
                 else{
+                    if(!keyInPlace){
+                        Instantiate(Key,respawn,Quaternion.identity);
+                        keyInPlace = true;
+                    }
                     following = true;
                 }
                 
@@ -68,8 +75,8 @@ public class DogControl : MonoBehaviour
             direction.y = 0;
             speed = 12;
             float diff = point.y - transform.position.y;
-            if (math.abs(diff) >= 5 && !jumpDelay){
-                StartCoroutine(Jump(transform.position.y+math.clamp(diff,-20,20)));
+            if (math.abs(diff) >= 1 && !jumpDelay){
+                StartCoroutine(Jump(transform.position.y+math.clamp(diff,-15f,15f)));
             }
             direction.z = 0;
             direction.Normalize();
@@ -87,11 +94,13 @@ public class DogControl : MonoBehaviour
             evilstate = target;
             SkinnedMeshRenderer dogmesh = GetComponentInChildren<SkinnedMeshRenderer>();
             if (evilstate){
+                GetComponent<AudioSource>().Play();
                 dogmesh.materials[0].color = Color.black;
                 dogmesh.materials[1].color = Color.red;
                 dogmesh.materials[1].SetColor("_EmissionColor",Color.red);
             }
             else{
+                GetComponent<AudioSource>().Stop();
                 dogmesh.materials[0].color = Color.white;
                 dogmesh.materials[1].color = Color.blue;
                 dogmesh.materials[1].SetColor("_EmissionColor",Color.blue);
@@ -117,6 +126,10 @@ public class DogControl : MonoBehaviour
             other.gameObject.transform.SetParent(mouth.transform,true);
             other.gameObject.GetComponent<Rigidbody2D>().Sleep();
             other.enabled = false;
+            if (plrComponent.key){
+                plrComponent.key = false;
+                keyInPlace = false;
+            }
             plrComponent.enabled = false;
             //point = new Vector3(UnityEngine.Random.Range(-90f,154f),UnityEngine.Random.Range(348f,444f),0);
             //other.gameObject.transform.position = playerCheckpoint;
@@ -129,30 +142,30 @@ public class DogControl : MonoBehaviour
 
 
     IEnumerator Jump(float target){
-        print("im jumba");
+        //print("im jumba");
         myAnimator.SetBool("Jumping", true);
         jump = true;
         yield return new WaitForSeconds(0.22f);
         float vertVel;
         bool startArc;
         if (target >= transform.position.y){
-            vertVel = 2.8f*(target-transform.position.y);
+            vertVel = 2.4f*(target-transform.position.y);
             startArc = true;
         }
         else{
-            vertVel = 45f;
+            vertVel = 35f;
             startArc = true;
         }
 
         while (startArc||(transform.position.y >= target && !startArc )){
-            vertVel -= 65f*Time.deltaTime;
+            vertVel -= 85f*Time.deltaTime;
             if (vertVel <= 0){
                 startArc = false;
             }
             velocity.y = vertVel;
             if (!startArc){
                 float v = -vertVel;
-                float a = 65f;
+                float a = 85f;
                 float h = math.abs(transform.position.y-target);
             
                 float solve = (-v+math.sqrt(v*v+2*a*h))/a;
@@ -166,7 +179,7 @@ public class DogControl : MonoBehaviour
         myAnimator.SetBool("Jumping", false);
         jump = false;
         jumpDelay = true;
-        float timing = math.clamp((math.abs(point.x-transform.position.x)/(math.abs(point.y-transform.position.y)/20))/speed,0.5f,5);
+        float timing = math.clamp((math.abs(point.x-transform.position.x)/(1+ math.abs(point.y-transform.position.y)/15f))/speed,0.1f,5f);
         yield return new WaitForSeconds(timing);
         jumpDelay = false;
     }

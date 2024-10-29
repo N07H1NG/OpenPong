@@ -4,25 +4,24 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class BarrierControl : MonoBehaviour,IPush
+public class RotateControl : MonoBehaviour,IPush
 {
     BoxCollider2D myCollider;
-    [SerializeField] float halfDistance;
     [SerializeField] float speed;
     [SerializeField] float faloff = 2.5f;
     [SerializeField] float speedup = 2.5f;
     float progress = 0;
     float enemyDirection = 1;
-    Vector3 endpoint1;
-    Vector3 endpoint2;
-    public GameObject ballObject;
+    Quaternion startrot;
+    Quaternion endrot;
+
     float mySpeed = 0;
     // Start is called before the first frame update
     void Start()
     {
         myCollider = GetComponent<BoxCollider2D>();
-        endpoint1 = transform.position - transform.up*halfDistance;
-        endpoint2 = transform.position + transform.up*halfDistance;
+        startrot = transform.rotation;
+
     }
 
     // Update is called once per frame
@@ -50,16 +49,16 @@ public class BarrierControl : MonoBehaviour,IPush
             mySpeed = 0;
             progress = math.clamp(progress,-0.5f,0.5f);
         }
-        transform.position = Vector3.Lerp(endpoint1,endpoint2,progress+0.5f);
+        transform.rotation = Quaternion.Euler(0f,0f,math.lerp(45f,-45f,progress+0.5f))*startrot;
+        print(progress+0.5f);
     }
 
-    void IPush.PushMe(BallBehaviour plrComponent)
-    {
-        plrComponent.GetHit(mySpeed*transform.up*speed*halfDistance);
-    }
+    //public void PushMe(BallBehaviour plrComponent)
+    //{
+    //    plrComponent.GetHit(mySpeed*transform.up*speed*halfDistance);
+    //}
 
-    void GetInputDirection()
-    {
-        enemyDirection = math.sign(Input.GetAxis("Horizontal"));
+    void IPush.PushMe(BallBehaviour ball){
+        ball.GetHit(Vector3.zero);
     }
 }
