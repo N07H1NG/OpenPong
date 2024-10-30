@@ -124,7 +124,7 @@ public class BallBehaviour : MonoBehaviour
                 reflected = (Vector3.ProjectOnPlane(reflected,normal) + normal*0.1f).normalized;
             }
             velocity = reflected*math.max(velocity.magnitude,default_speed);
-            //GetComponents<AudioSource>()[1].Play();
+            GetComponents<AudioSource>()[1].Play();
         }
     } 
 }

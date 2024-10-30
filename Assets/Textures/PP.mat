@@ -85,8 +85,8 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NoiseAmount: 0
-    - _NoisePoint: 0.069
-    - _NoiseScale: 0.25
+    - _NoisePoint: 0
+    - _NoiseScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PatternScale: 1
