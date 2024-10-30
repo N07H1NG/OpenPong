@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ExitGameBarrier : MonoBehaviour
 {
+    [SerializeField] GameObject canv;
     // Start is called before the first frame update
     /// <summary>
     /// Sent when another object leaves a trigger collider attached to
@@ -13,7 +14,8 @@ public class ExitGameBarrier : MonoBehaviour
     IEnumerator OnTriggerExit2D(Collider2D other)
     {
         if(other.TryGetComponent<BallBehaviour>(out BallBehaviour bh)){
-            yield return new WaitForSeconds(2f);
+            canv.SetActive(false);
+            yield return new WaitForSeconds(10f);
             Application.Quit(); 
         }
                

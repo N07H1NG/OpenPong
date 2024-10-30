@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abba7a624d235d14fa96a90040e58420, type: 3}
+  m_Name: ThudCue
+  m_EditorClassIdentifier: 
+  containClips:
+  - {fileID: 8300000, guid: 99702a98d85333a478736aab27deaea5, type: 3}
+  - {fileID: 8300000, guid: b83247757af73864fb875cf1f943c137, type: 3}
+  - {fileID: 8300000, guid: 5c17b2f332f70864883a77658c6472b0, type: 3}
+  - {fileID: 8300000, guid: 56c61bee5785eb5408afdcf346369900, type: 3}
+  - {fileID: 8300000, guid: 9b6c38f1979f94c4283422ff6c6176a3, type: 3}
+  - {fileID: 8300000, guid: c314d5bf4f40c5947856aa4c1218e7ef, type: 3}

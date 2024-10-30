@@ -21,6 +21,7 @@ public class BallBehaviour : MonoBehaviour
     Vector3 velocity;
     [SerializeField]public bool greenBucket = false;
     [SerializeField]public bool blueBucket = false;
+    [SerializeField] MyAudioCue thud;
     AudioSource bounce;
     public int scoreLimit = 5;
     public bool infinity = false;
@@ -106,6 +107,9 @@ public class BallBehaviour : MonoBehaviour
         if (other.gameObject.TryGetComponent<IPush>(out IPush ip)){
             ip.PushMe(this);
         }
+        else if(!other.gameObject.TryGetComponent<ScoreManagementLose>(out ScoreManagementLose scl)){
+            GetComponents<AudioSource>()[1].PlayOneShot(thud.GetRandomClip());
+        }
         
         
     }
@@ -124,7 +128,7 @@ public class BallBehaviour : MonoBehaviour
                 reflected = (Vector3.ProjectOnPlane(reflected,normal) + normal*0.1f).normalized;
             }
             velocity = reflected*math.max(velocity.magnitude,default_speed);
-            GetComponents<AudioSource>()[1].Play();
+            
         }
     } 
 }
