@@ -58,9 +58,9 @@ public class Hole : MonoBehaviour
             d.z=0;
             float p = math.clamp((GetComponent<Collider2D>().bounds.extents.y-d.magnitude)/(GetComponent<Collider2D>().bounds.extents.y),0f,1f);
             print(p);
-            current_force = d.normalized*0.1f*(GetComponent<Collider2D>().bounds.extents.y)/d.magnitude*d.magnitude;
+            current_force = d.normalized*0.15f*(GetComponent<Collider2D>().bounds.extents.y)/d.magnitude*d.magnitude;
             
-            current_force += 0.1f*d*(0.5f-Vector3.Dot(ball.GetVelocity().normalized,d.normalized));
+            current_force += 0.2f*d*(0.5f-Vector3.Dot(ball.GetVelocity().normalized,d.normalized));
             current_force -= 0.4f*math.pow(p,2.7f)*Vector3.ProjectOnPlane(ball.GetVelocity(),d.normalized);
             ball.force += current_force;
             applied = true;
@@ -80,6 +80,8 @@ public class Hole : MonoBehaviour
 
     IEnumerator Teleport(){
         ball.transform.position = choice;
+        ball.SetVelocity(ball.GetVelocity().normalized*ball.default_speed);
+        ball.UpdateScore(0);
         active = false;
         yield return null;
     }

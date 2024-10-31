@@ -18269,7 +18269,7 @@ GameObject:
   - component: {fileID: 1052067603}
   - component: {fileID: 1052067606}
   m_Layer: 0
-  m_Name: e
+  m_Name: ForScreenshotsCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18342,13 +18342,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052067602}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.14655463, y: 0.30510533, z: 0.1614112, w: 0.9270269}
-  m_LocalPosition: {x: -8, y: -8, z: -16}
+  m_LocalRotation: {x: -0.33873245, y: 0.060803775, z: 0.18893524, w: 0.91971016}
+  m_LocalPosition: {x: 41, y: -61, z: -127}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -21.729, y: 33.919, z: 13.055}
+  m_LocalEulerAnglesHint: {x: -40.244, y: -1.213, z: 23.662}
 --- !u!114 &1052067606
 MonoBehaviour:
   m_ObjectHideFlags: 0

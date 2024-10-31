@@ -66,17 +66,14 @@ public class ScoreManagementLose : MonoBehaviour
         {
             
             if (plrComponent.score >= limit){
-                flyThrough = true;
-                plrComponent.passing +=1;
-            }
-            else{
-                //
-                //eep.Play();
-                //ector3 sidevector = plrComponent.olderposition-gameObject.transform.position;
-                //loat side = math.dot(transform.right,sidevector);
-                //ide = math.sign(side);
-                //lrComponent.CollisionRedefenition(transform.right*side);
-                //lrComponent.score = 0;
+                if(!flyThrough)
+                {
+                    flyThrough = true;
+                    if (!plrComponent.passingObjects.Contains(gameObject)){
+                        plrComponent.passingObjects.Add(gameObject);
+                    }
+                }
+                
             }
             
         }
@@ -86,12 +83,15 @@ public class ScoreManagementLose : MonoBehaviour
         if(other.gameObject.TryGetComponent<BallBehaviour>(out BallBehaviour plrComponent)){
             if (flyThrough){
                 flyThrough = false;
+                if (plrComponent.passingObjects.Contains(gameObject)){
+                        plrComponent.passingObjects.Remove(gameObject);
+                }
                 glass.Play();
                 if (!plrComponent.infinity){
                     plrComponent.score -= limit;
                     plrComponent.score = math.max(plrComponent.score,0);
                 }
-                plrComponent.passing -=1;
+                
                 BallBehaviour.scareEvent.Invoke(plrComponent.score);
             }
         }

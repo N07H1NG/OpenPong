@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using Random = UnityEngine.Random;
 using UnityEditor;
 using System;
+using UnityEngine.UIElements;
 public class MyIntEvent : UnityEvent <int> {}
 
 
@@ -27,8 +28,8 @@ public class BallBehaviour : MonoBehaviour
     public bool infinity = false;
     public bool key = false;
 
-    public int passing = 0;
-    [SerializeField] float default_speed = 10;
+    public HashSet<GameObject> passingObjects;
+    [SerializeField] public float default_speed;
 
     Rigidbody2D myRigidBody;
     public Vector3 force = new Vector3(0,0,0);
@@ -41,6 +42,7 @@ public class BallBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        passingObjects = new HashSet<GameObject>();
         Screen.SetResolution(640,360,false);
         bounce = GetComponent<AudioSource>();
         float ang = math.radians(Random.Range(45,-45));
@@ -58,14 +60,7 @@ public class BallBehaviour : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        if (velocity.magnitude != default_speed){
-            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5*Time.fixedDeltaTime) * math.sign(velocity.magnitude-default_speed);
-            velocity = velocity.normalized * (velocity.magnitude - diff);
-        }
-        if (passing==0){
-            velocity+= force*Time.fixedDeltaTime;
-        }
-        myRigidBody.velocity = velocity;
+        
         //olderposition = oldposition;
 
         //oldposition = transform.position;
@@ -74,14 +69,24 @@ public class BallBehaviour : MonoBehaviour
     }
     void Update()
     {
+        if (velocity.magnitude != default_speed){
+            float diff = (float)math.min(math.abs(velocity.magnitude-default_speed), 5f*Time.deltaTime) * math.sign(velocity.magnitude-default_speed);
+            velocity = velocity.normalized * (velocity.magnitude - diff);
+        }
+        if (passingObjects.Count ==0){
+            velocity+= force*Time.deltaTime;
+        }
+        velocity = new Vector3(velocity.x,velocity.y,0);
+        myRigidBody.velocity = velocity;
         //oldposition = transform.position;
         
         //transform.position += velocity*Time.deltaTime;
 
-        if (Input.GetKeyDown("space")){
-            score = scoreLimit;
-            scareEvent.Invoke(score);
-        }
+        //if (Input.GetKeyDown("space")){
+        //    scoreLimit = 20;
+        //    score = scoreLimit;
+        //    scareEvent.Invoke(score);
+        //}
     }
 
     public void GetHit(Vector3 power)
@@ -102,6 +107,7 @@ public class BallBehaviour : MonoBehaviour
     { 
         ContactPoint2D contact = other.GetContact(0);
         //throw new System.Exception();
+        Vector3 fixn = new Vector3(contact.normal.x,contact.normal.y,0).normalized;
         Vector3 n = Vector3.Project(transform.position - new Vector3(contact.point.x,contact.point.y,0),contact.normal).normalized;
         CollisionRedefenition(n);
         if (other.gameObject.TryGetComponent<IPush>(out IPush ip)){
@@ -131,4 +137,15 @@ public class BallBehaviour : MonoBehaviour
             
         }
     } 
+
+    public void SetVelocity(Vector3 newvel){
+        velocity = newvel;
+    }
+
+    public void UpdateScore(int newscore){
+        if (!infinity){
+            score = newscore;
+            scareEvent.Invoke(score);
+        }
+    }
 }
