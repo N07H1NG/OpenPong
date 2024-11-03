@@ -76,6 +76,14 @@ public class BallBehaviour : MonoBehaviour
         if (passingObjects.Count ==0){
             velocity+= force*Time.deltaTime;
         }
+        else{
+            foreach(GameObject obj in passingObjects){
+                if (!GetComponent<Collider2D>().IsTouching(obj.GetComponent<Collider2D>())){
+                    passingObjects.Remove(obj);
+                }
+            }
+            
+        }
         velocity = new Vector3(velocity.x,velocity.y,0);
         myRigidBody.velocity = velocity;
         //oldposition = transform.position;
