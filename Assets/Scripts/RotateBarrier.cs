@@ -16,19 +16,22 @@ public class RotateControl : MonoBehaviour,IPush
     Quaternion endrot;
 
     float mySpeed = 0;
+    bool usePulleys = false;
     // Start is called before the first frame update
     void Start()
     {
         myCollider = GetComponent<BoxCollider2D>();
         startrot = transform.rotation;
-
+        if (PulleyInput.Instance != null){
+            usePulleys = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        enemyDirection = math.sign(Input.GetAxis("Horizontal"));
+        enemyDirection = GetInputDirection();
         if (enemyDirection == 0)
         {
             mySpeed -= math.min(faloff*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
@@ -59,5 +62,13 @@ public class RotateControl : MonoBehaviour,IPush
 
     void IPush.PushMe(BallBehaviour ball){
         ball.GetHit(Vector3.zero);
+    }
+
+    float GetInputDirection()
+    {
+        if (usePulleys){
+            return PulleyInput.Instance.GetPulleyDirection();
+        }
+        return math.sign(Input.GetAxis("Horizontal"));
     }
 }

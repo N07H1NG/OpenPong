@@ -17,19 +17,23 @@ public class BarrierControl : MonoBehaviour,IPush
     Vector3 endpoint2;
     public GameObject ballObject;
     float mySpeed = 0;
+    bool usePulleys = false;
     // Start is called before the first frame update
     void Start()
     {
         myCollider = GetComponent<BoxCollider2D>();
         endpoint1 = transform.position - transform.up*halfDistance;
         endpoint2 = transform.position + transform.up*halfDistance;
+        if (PulleyInput.Instance != null){
+            usePulleys = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        enemyDirection = math.sign(Input.GetAxis("Horizontal"));
+        enemyDirection = GetInputDirection();
         if (enemyDirection == 0)
         {
             mySpeed -= math.min(faloff*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
@@ -58,8 +62,11 @@ public class BarrierControl : MonoBehaviour,IPush
         plrComponent.GetHit(mySpeed*transform.up*speed*halfDistance);
     }
 
-    void GetInputDirection()
+    float GetInputDirection()
     {
-        enemyDirection = math.sign(Input.GetAxis("Horizontal"));
+        if (usePulleys){
+            return PulleyInput.Instance.GetPulleyDirection();
+        }
+        return math.sign(Input.GetAxis("Horizontal"));
     }
 }
