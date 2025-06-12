@@ -32,27 +32,35 @@ public class BarrierControl : MonoBehaviour,IPush
     // Update is called once per frame
     void Update()
     {
-        
-        enemyDirection = GetInputDirection();
-        if (enemyDirection == 0)
+        if (!usePulleys)
         {
-            mySpeed -= math.min(faloff*Time.deltaTime,math.abs(mySpeed))*math.sign(mySpeed);
-            
-        }
-        else if (enemyDirection!= math.sign(mySpeed))
-        {
-            mySpeed = enemyDirection;
+            enemyDirection = GetInputDirection();
+
+            if (enemyDirection == 0)
+            {
+                mySpeed -= math.min(faloff * Time.deltaTime, math.abs(mySpeed)) * math.sign(mySpeed);
+
+            }
+            else if (enemyDirection != math.sign(mySpeed))
+            {
+                mySpeed = enemyDirection;
+            }
+            else
+            {
+                mySpeed += speedup * Time.deltaTime * enemyDirection;
+            }
+            progress += mySpeed * speed * Time.deltaTime;
         }
         else
         {
-            mySpeed += speedup*Time.deltaTime*enemyDirection;
+            float targ = (PulleyInput.Instance.AvgValue - 30f) / (85f - 30f) - 0.5f;
+            mySpeed = (targ - progress) / (speed * Time.deltaTime);
+            progress = targ;
         }
-        progress += mySpeed*speed*Time.deltaTime;
-
         if (math.abs(progress) >= 0.5f)
         {
             mySpeed = 0;
-            progress = math.clamp(progress,-0.5f,0.5f);
+            progress = math.clamp(progress, -0.5f, 0.5f);
         }
         transform.position = Vector3.Lerp(endpoint1,endpoint2,progress+0.5f);
     }
