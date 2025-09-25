@@ -10,8 +10,9 @@ public  class PulleyInput : MonoBehaviour
 {
     
     public static PulleyInput Instance {get; private set;}
+    [SerializeField] public bool Active;
     SerialPort serial;
-    string portName = "COM3"; // Укажи правильный COM-порт!
+    [SerializeField] string portName = "COM3"; // Укажи правильный COM-порт!
     int baudRate = 9600;
     string latestValue;
 
@@ -32,6 +33,12 @@ public  class PulleyInput : MonoBehaviour
     }
     void Start()
     {
+        TryToOpenPort();
+        StartCoroutine(CheckData());
+    }
+
+    void TryToOpenPort()
+    {
         serial = new SerialPort(portName, baudRate);
         serial.ReadTimeout = 1000;
         try {
@@ -40,10 +47,10 @@ public  class PulleyInput : MonoBehaviour
         } catch (Exception e) {
             Debug.LogError("Could not open serial port: " + e.Message);
         }
-        StartCoroutine(CheckData());
     }
 
-    public float GetPulleyDirection(){
+    public float GetPulleyDirection()
+    {
         return (AxisValue > 57.5) ? 1 : -1;
     }
 
@@ -76,10 +83,14 @@ public  class PulleyInput : MonoBehaviour
                     {
                         Debug.Log("Cant read");
                     }
-                    
-                    
+
+
                 }
                 catch (TimeoutException) { }
+            }
+            else
+            {
+                TryToOpenPort();
             }
             yield return null;
         }

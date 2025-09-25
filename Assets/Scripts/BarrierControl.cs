@@ -25,7 +25,7 @@ public class BarrierControl : MonoBehaviour,IPush
         endpoint1 = transform.position - transform.up*halfDistance;
         endpoint2 = transform.position + transform.up*halfDistance;
         if (PulleyInput.Instance != null){
-            usePulleys = true;
+            usePulleys = PulleyInput.Instance.Active;
         }
     }
 
