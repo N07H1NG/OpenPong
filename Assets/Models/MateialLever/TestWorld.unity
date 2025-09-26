@@ -15889,7 +15889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02694a735d3aa0347845b24b7e41e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Active: 0
+  Active: 1
   portName: COM3
 --- !u!4 &800284155
 Transform:
